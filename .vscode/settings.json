@@ -1,0 +1,8 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Program Files\\Eclipse Adoptium\\jdk-17.0.8.7-hotspot\\bin\\algs4.jar"
+    ]
+}

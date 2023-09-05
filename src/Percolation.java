@@ -9,10 +9,12 @@ public class Percolation {
         
 
         for (int i = 0; i < N*N; i++){
-            JButton btn1 = new JButton("0"); 
-            frameObj.add(btn1);  
+            JButton btn1 = new JButton("1"); 
+            frameObj.add(btn1);
+            btn1.setName(String.valueOf(i));
+            //System.out.println(btn1.getName()); get name of button
         }
-        
+        System.out.println(frameObj.contains(2,2));
          
         
             

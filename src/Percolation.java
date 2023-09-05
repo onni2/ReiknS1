@@ -1,25 +1,57 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-
+import java.awt.*;    
+import javax.swing.*;  
 public class Percolation {
     public Percolation(int N) // create N-by-N grid, with all sites initially blocked
-    {}
+    {
+        JFrame frameObj;
+        frameObj = new JFrame();    
+        
+
+        for (int i = 0; i < N*N; i++){
+            JButton btn1 = new JButton("0"); 
+            frameObj.add(btn1);  
+        }
+        
+         
+        
+            
+        // adding buttons to the frame  
+        // since, we are using the parameterless constructor, therfore;   
+        // the number of columns is equal to the number of buttons we   
+        // are adding to the frame. The row count remains one.  
+          
+        
+        // setting the grid layout using the parameterless constructor    
+        frameObj.setLayout(new GridLayout(N, N));    
+        
+        
+        frameObj.setSize(300, 300);    
+        frameObj.setVisible(true);    
+    }
     public void open(int row, int col) // open the site (row, col) if it is not open already
-    {}
-    public boolean isOpen(int row, int col) // is the site (row, col) open?
-    {
-        return false;}
-    public boolean isFull(int row, int col) // is the site (row, col) full?
-    {
-        return false;}
-    public int numberOfOpenSites() // number of open sites
-    {
-        return 0;}
-    public boolean percolates() // does the system percolate?
-    {
-        return false;}
-    public static void main(String[] args) // unit testing (required)
     {
 
+    }
+    public boolean isOpen(int row, int col) // is the site (row, col) open?
+    {
+        return false;
+    }
+    public boolean isFull(int row, int col) // is the site (row, col) full?
+    {
+        return false;
+    }
+    public int numberOfOpenSites() // number of open sites
+    {
+        return 0;
+    }
+    public boolean percolates() // does the system percolate?
+    {
+        return false;
+    }
+    public static void main(String[] args) // unit testing (required)
+    {
+        new Percolation(5);
     }
 }
 

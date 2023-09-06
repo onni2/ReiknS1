@@ -1,61 +1,122 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-import java.awt.*;    
-import javax.swing.*;  
+
 public class Percolation {
-    public Percolation(int N) // create N-by-N grid, with all sites initially blocked
-    {
-        JFrame frameObj;
-        frameObj = new JFrame();    
-        
+    private int[] parent; // Store parent links
+    private int[] size;   // Store size of each component
+    private boolean[] openSites; // Store open status of sites
+    private int gridSize; // Number of sites in the grid
+    private int openCount; // Number of open sites
 
-        for (int i = 0; i < N*N; i++){
-            JButton btn1 = new JButton("1"); 
-            frameObj.add(btn1);
-            btn1.setName(String.valueOf(i));
-            //System.out.println(btn1.getName()); get name of button
+    // Create N-by-N grid, with all sites initially blocked
+    public Percolation(int N) {
+        if (N <= 0) {
+            throw new IllegalArgumentException("N must be greater than 0");
         }
-        System.out.println(frameObj.contains(2,2));
-         
-        
-            
-        // adding buttons to the frame  
-        // since, we are using the parameterless constructor, therfore;   
-        // the number of columns is equal to the number of buttons we   
-        // are adding to the frame. The row count remains one.  
-          
-        
-        // setting the grid layout using the parameterless constructor    
-        frameObj.setLayout(new GridLayout(N, N));    
-        
-        
-        frameObj.setSize(300, 300);    
-        frameObj.setVisible(true);    
-    }
-    public void open(int row, int col) // open the site (row, col) if it is not open already
-    {
+        gridSize = N;
+        int totalSites = N * N;
+        parent = new int[totalSites + 2]; // Extra 2 for virtual top and bottom
+        size = new int[totalSites + 2];
+        openSites = new boolean[totalSites];
+        openCount = 0;
 
+        // Initialize parent and size arrays
+        for (int i = 0; i <= totalSites + 1; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+
+        // Connect virtual top and bottom to the first and last rows
+        for (int col = 1; col <= N; col++) {
+            union(encode(1, col), 0); // Connect to virtual top (0)
+            union(encode(N, col), totalSites + 1); // Connect to virtual bottom (totalSites + 1)
+        }
     }
-    public boolean isOpen(int row, int col) // is the site (row, col) open?
-    {
-        return false;
+
+    // Open the site (row, col) if it is not open already
+    public void open(int row, int col) {
+        validateIndices(row, col);
+        int siteIndex = encode(row, col);
+
+        if (!openSites[siteIndex]) {
+            openSites[siteIndex] = true;
+            openCount++;
+
+            int[] neighbors = {encode(row - 1, col), encode(row + 1, col), encode(row, col - 1), encode(row, col + 1)};
+
+            for (int neighbor : neighbors) {
+                if (neighbor != -1 && isOpen(neighbor / gridSize, neighbor % gridSize)) {
+                    union(siteIndex, neighbor);
+                }
+            }
+        }
     }
-    public boolean isFull(int row, int col) // is the site (row, col) full?
-    {
-        return false;
+
+    // Is the site (row, col) open?
+    public boolean isOpen(int row, int col) {
+        validateIndices(row, col);
+        return openSites[encode(row, col)];
     }
-    public int numberOfOpenSites() // number of open sites
-    {
-        return 0;
+
+    // Is the site (row, col) full?
+    public boolean isFull(int row, int col) {
+        validateIndices(row, col);
+        return isOpen(row, col) && connected(encode(row, col), 0);
     }
-    public boolean percolates() // does the system percolate?
-    {
-        return false;
+
+    // Number of open sites
+    public int numberOfOpenSites() {
+        return openCount;
     }
-    public static void main(String[] args) // unit testing (required)
-    {
-        new Percolation(5);
+
+    // Does the system percolate?
+    public boolean percolates() {
+        return connected(0, gridSize * gridSize + 1);
+    }
+
+    // Validate row and col indices
+    private void validateIndices(int row, int col) {
+        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
+            throw new IndexOutOfBoundsException("Row or column index is out of bounds");
+        }
+    }
+
+    // Encode 2D coordinates to 1D union-find representation
+    private int encode(int row, int col) {
+        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize) {
+            return -1; // Return -1 for out-of-bounds sites
+        }
+        return row * gridSize + col + 1;
+    }
+
+    // Weighted Quick Union-Find operations
+    private int root(int i) {
+        while (i != parent[i]) {
+            parent[i] = parent[parent[i]]; // Path compression
+            i = parent[i];
+        }
+        return i;
+    }
+
+    private boolean connected(int p, int q) {
+        return root(p) == root(q);
+    }
+
+    private void union(int p, int q) {
+        int rootP = root(p);
+        int rootQ = root(q);
+        if (rootP == rootQ) return;
+
+        if (size[rootP] > size[rootQ]) {
+            parent[rootQ] = rootP;
+            size[rootP] += size[rootQ];
+        } else {
+            parent[rootP] = rootQ;
+            size[rootQ] += size[rootP];
+        }
     }
 }
+
+
 
 
 

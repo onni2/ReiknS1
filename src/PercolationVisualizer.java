@@ -63,6 +63,7 @@ public class PercolationVisualizer {
     private static void simulateFromFile(String filename) {
         In in = new In(filename);
         int n = in.readInt();
+        System.out.println("n is: " + n + " in is: " + in.isEmpty());
         Percolation percolation = new Percolation(n);
 
         // turn on animation mode
@@ -84,7 +85,7 @@ public class PercolationVisualizer {
     }
 
     public static void main(String[] args) {
-        String filename = args[1];
+        String filename = "txt.txt";
         simulateFromFile(filename);
     }
 }

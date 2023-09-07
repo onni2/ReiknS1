@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
@@ -5,14 +7,14 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 // Models an N-by-N percolation system.
 public class Percolation {
     private int source = 0;
-    private boolean[][] x;
+    private boolean[][] grid;
     private int count, sink, open;
     private WeightedQuickUnionUF uf;
 
     // Create an N-by-N grid, with all sites blocked.
     public Percolation(int N) {
         // structure = new QuickFindUF(N);
-        x = new boolean[N][N];
+        grid = new boolean[N][N];
         count = N;
         sink = N * N + 1;
         uf = new WeightedQuickUnionUF(N * N + 2);
@@ -20,13 +22,13 @@ public class Percolation {
 
     // Open site (i, j) if it is not open already.
     public void open(int i, int j) {
-        x[i][j] = true;
+        grid[i][j] = true;
         if (i == 0) {
             uf.union(encode(i, j), source);
         }
         if (i == count - 1) {
             uf.union(encode(i, j), sink);
-        }
+        } 
         if (i > 0 && isOpen(i - 1, j)) {
             uf.union(encode(i, j), encode(i - 1, j));
         }
@@ -43,14 +45,22 @@ public class Percolation {
 
     // Is site (i, j) open?
     public boolean isOpen(int i, int j) {
-        return x[i][j];
+        Random random = new Random();
+        int x = random.nextInt(2) + 1;
+        System.out.println(x);
+        if (x == 1){
+            return grid[i][j];
+        } else{
+            return !grid[i][j];
+        }
+        
     }
 
     // Is site (i, j) full?
     public boolean isFull(int i, int j) {
-        // if (x[i][j] == false) { return true; }
+        // if (grid[i][j] == false) { return true; }
         // else { return false; }
-        return !x[i][j];
+        return !grid[i][j];
     }
 
     // Number of open sites.
@@ -58,11 +68,12 @@ public class Percolation {
         open = 0;
         for (int i = 0; i < count; i++) {
             for (int j = 0; j < count; j++) {
-                if (x[i][j]) {
+                if (grid[i][j]) {
                     open++;
                 }
             }
         }
+        System.out.println("number of open sites: " + open);
         return open;
     }
 

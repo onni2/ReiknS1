@@ -1,3 +1,4 @@
+
 /******************************************************************************
  *  Compilation:  javac InteractivePercolationVisualizer.java
  *  Execution:    java InteractivePercolationVisualizer n
@@ -10,7 +11,7 @@
  *
  ******************************************************************************/
 
-/* import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 public class InteractivePercolationVisualizer {
@@ -18,8 +19,9 @@ public class InteractivePercolationVisualizer {
 
     public static void main(String[] args) {
         // n-by-n percolation system (read from command-line, default = 10)
-        int n = 10;          
-        if (args.length == 1) n = Integer.parseInt(args[0]);
+        int n = 10;
+        if (args.length == 1)
+            n = Integer.parseInt(args[0]);
 
         // turn on animation mode
         StdDraw.enableDoubleBuffering();
@@ -46,7 +48,7 @@ public class InteractivePercolationVisualizer {
 
                 // open site (i, col) provided it's in bounds
                 if (row >= 0 && row < n && col >= 0 && col < n) {
-                    if (!percolation.isOpen(row, col)) { 
+                    if (!percolation.isOpen(row, col)) {
                         StdOut.println(row + " " + col);
                     }
                     percolation.open(row, col);
@@ -59,4 +61,4 @@ public class InteractivePercolationVisualizer {
             StdDraw.pause(DELAY);
         }
     }
-} */
+}

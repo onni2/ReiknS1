@@ -1,6 +1,7 @@
 import java.util.Random;
 
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
@@ -18,49 +19,38 @@ public class Percolation {
         count = N;
         sink = N * N + 1;
         uf = new WeightedQuickUnionUF(N * N + 2);
+        for (int i = 0; i < count; i++) {
+            for (int j = 0; j < count; j++) {
+                grid[i][j] = false;
+            }
+        }
+        
+
     }
 
     // Open site (i, j) if it is not open already.
     public void open(int i, int j) {
         grid[i][j] = true;
-        if (i == 0) {
-            uf.union(encode(i, j), source);
-        }
-        if (i == count - 1) {
-            uf.union(encode(i, j), sink);
-        } 
-        if (i > 0 && isOpen(i - 1, j)) {
-            uf.union(encode(i, j), encode(i - 1, j));
-        }
-        if (i < count - 1 && isOpen(i + 1, j)) {
-            uf.union(encode(i, j), encode(i + 1, j));
-        }
-        if (j > 0 && isOpen(i, j - 1)) {
-            uf.union(encode(i, j), encode(i, j - 1));
-        }
-        if (j < count - 1 && isOpen(i, j + 1)) {
-            uf.union(encode(i, j), encode(i, j + 1));
-        }
+
+        
     }
+
 
     // Is site (i, j) open?
     public boolean isOpen(int i, int j) {
-        Random random = new Random();
-        int x = random.nextInt(2) + 1;
-        System.out.println(x);
-        if (x == 1){
-            return grid[i][j];
-        } else{
-            return !grid[i][j];
-        }
+        if (grid[i][j] == true) { return grid[i][j] = true; }
+        else { return grid[i][j] = false; }
+        
         
     }
 
     // Is site (i, j) full?
     public boolean isFull(int i, int j) {
-        // if (grid[i][j] == false) { return true; }
-        // else { return false; }
-        return !grid[i][j];
+        if (grid[i][j] = true) {
+
+            return true;
+
+        }else { return false; }
     }
 
     // Number of open sites.
@@ -79,6 +69,29 @@ public class Percolation {
 
     // Does the system percolate?
     public boolean percolates() {
+        for (int i = 0; i < count; i++) {
+            for (int j = 0; j < count; j++) {
+                if (i == 0) {
+                uf.union(encode(i, j), source);
+                }
+                if (i == count - 1) {
+                    uf.union(encode(i, j), sink);
+                }
+                if (j > 0 && isOpen(i, j - 1)) {
+                    uf.union(encode(i, j), encode(i, j - 1));
+                }
+                if (i > 0 && isOpen(i - 1, j)) {
+                    uf.union(encode(i, j), encode(i - 1, j));
+                }
+                if (i < count - 1 && isOpen(i + 1, j)) {
+                    uf.union(encode(i, j), encode(i + 1, j));
+                }
+                
+                if (j < count - 1 && isOpen(i, j + 1)) {
+                    uf.union(encode(i, j), encode(i, j + 1));
+                }
+            }
+        }
         return uf.connected(source, sink);
     }
 
@@ -88,30 +101,8 @@ public class Percolation {
         return en;
     }
 
-    // Test client. [DO NOT EDIT]
+    
     public static void main(String[] args) {
-        String filename = args[0];
-        In in = new In(filename);
-        int N = in.readInt();
-        Percolation perc = new Percolation(N);
-        while (!in.isEmpty()) {
-            int i = in.readInt();
-            int j = in.readInt();
-            perc.open(i, j);
-        }
-        StdOut.println(perc.numberOfOpenSites() + " open sites");
-        if (perc.percolates()) {
-            StdOut.println("percolates");
-        } else {
-            StdOut.println("does not percolate");
-        }
-
-        // Check if site (i, j) optionally specified on the command line
-        // is full.
-        if (args.length == 3) {
-            int i = Integer.parseInt(args[1]);
-            int j = Integer.parseInt(args[2]);
-            StdOut.println(perc.isFull(i, j));
-        }
+        
     }
 }

@@ -19,18 +19,39 @@ public class Percolation {
         count = N;
         sink = N * N + 1;
         uf = new WeightedQuickUnionUF(N * N + 2);
-        for (int i = 0; i < count; i++) {
-            for (int j = 0; j < count; j++) {
-                grid[i][j] = false;
-            }
-        }
+        
         
 
     }
 
     // Open site (i, j) if it is not open already.
     public void open(int i, int j) {
-        grid[i][j] = true;
+        if (i == 0) {
+            uf.union(encode(i, j), source);
+            grid[i][j] = true;
+            }
+        if (i == count - 1) {
+                uf.union(encode(i, j), sink);
+                grid[i][j] = true;
+            }
+        if (j > 0 && isOpen(i, j - 1)) {
+                uf.union(encode(i, j), encode(i, j - 1));
+                grid[i][j] = true;
+            }
+        if (i > 0 && isOpen(i - 1, j)) {
+                uf.union(encode(i, j), encode(i - 1, j));
+                grid[i][j] = true;
+            }
+        if (i < count - 1 && isOpen(i + 1, j)) {
+                uf.union(encode(i, j), encode(i + 1, j));
+                grid[i][j] = true;
+            }
+            
+        if (j < count - 1 && isOpen(i, j + 1)) {
+                uf.union(encode(i, j), encode(i, j + 1));
+                grid[i][j] = true;
+            }
+        grid[i][j] = false;
 
         
     }
@@ -46,11 +67,8 @@ public class Percolation {
 
     // Is site (i, j) full?
     public boolean isFull(int i, int j) {
-        if (grid[i][j] = true) {
-
-            return true;
-
-        }else { return false; }
+        if (grid[i][j] == true) { return grid[i][j] = true; }
+        else { return grid[i][j] = false; }
     }
 
     // Number of open sites.
@@ -69,29 +87,6 @@ public class Percolation {
 
     // Does the system percolate?
     public boolean percolates() {
-        for (int i = 0; i < count; i++) {
-            for (int j = 0; j < count; j++) {
-                if (i == 0) {
-                uf.union(encode(i, j), source);
-                }
-                if (i == count - 1) {
-                    uf.union(encode(i, j), sink);
-                }
-                if (j > 0 && isOpen(i, j - 1)) {
-                    uf.union(encode(i, j), encode(i, j - 1));
-                }
-                if (i > 0 && isOpen(i - 1, j)) {
-                    uf.union(encode(i, j), encode(i - 1, j));
-                }
-                if (i < count - 1 && isOpen(i + 1, j)) {
-                    uf.union(encode(i, j), encode(i + 1, j));
-                }
-                
-                if (j < count - 1 && isOpen(i, j + 1)) {
-                    uf.union(encode(i, j), encode(i, j + 1));
-                }
-            }
-        }
         return uf.connected(source, sink);
     }
 

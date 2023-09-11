@@ -127,8 +127,4 @@ public class Percolation {
         return en;
     }
 
-    
-    public static void main(String[] args) {
-        
-    }
 }

@@ -1,11 +1,7 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Random;
-
-import edu.princeton.cs.algs4.In;
+/* import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.QuickFindUF; */
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 // Models an N-by-N percolation system.
@@ -16,10 +12,10 @@ public class Percolation {
     private WeightedQuickUnionUF uf;
     public boolean isOpen = false;
     public boolean isFull = false;
-    private Random random = new Random();
+    //private Random random = new Random();
 
     // Save a random subset of the grid to a text file
-    public void saveRandomToFile(String filename, int numCoordinatesToSave) {
+    /* public void saveRandomToFile(String filename, int numCoordinatesToSave) {
         try {
             PrintWriter writer = new PrintWriter(new FileWriter(filename));
             writer.println(count); // Write the grid size first
@@ -28,7 +24,6 @@ public class Percolation {
                     int ran = random.nextInt(2) + 1;
                     if(ran == 1){
                         writer.println(x + " " + y); // Write coordinates and value
-                        System.out.println(x + " " + y);
                     }
                 }
             }
@@ -39,28 +34,35 @@ public class Percolation {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    } */
     // Create an N-by-N grid, with all sites blocked.
     public Percolation(int N) {
         if (N <= 0) {
             throw new IllegalArgumentException("N must be greater than 0");
+            
+        } else{
+            grid = new boolean[N][N];
+            count = N;
+            sink = N * N + 1;
+            uf = new WeightedQuickUnionUF(N * N + 2);
+            
+            /* int numCoordinatesToSave = 10; // Replace with the number of random coordinates you want to save
+            saveRandomToFile("input.txt", numCoordinatesToSave); */
         }
-        // structure = new QuickFindUF(N);
-        grid = new boolean[N][N];
-        count = N;
-        sink = N * N + 1;
-        uf = new WeightedQuickUnionUF(N * N + 2);
         
-        int numCoordinatesToSave = 10; // Replace with the number of random coordinates you want to save
-        saveRandomToFile("txt.txt", numCoordinatesToSave);
     }
 
     // Open site (i, j) if it is not open already.
     public void open(int i, int j) {
         if (i < 0 || i >= count || j < 0 || j >= count) {
             throw new IndexOutOfBoundsException("Invalid arguments for open()");
+            
+        } else if (i < 0 && i >= count && i < 0 || i >= count){
+            throw new IndexOutOfBoundsException("Invalid arguments for open()");
+        } else if(j < 0 && j >= count && j < 0 || j >= count){
+            throw new IndexOutOfBoundsException("Invalid arguments for open()");
         }
-        if (!isOpen(i, j)) {
+        else if (!isOpen(i, j)) {
             grid[i][j] = true;
             if (i == 0) {
                 uf.union(encode(i, j), source);
@@ -112,7 +114,6 @@ public class Percolation {
                 }
             }
         }
-        System.out.println("number of open sites: " + open);
         return open;
     }
 
@@ -125,6 +126,9 @@ public class Percolation {
     private int encode(int i, int j) {
         int en = count * (i) + j;
         return en;
+    }
+    public static void main(String[] args) {
+        
     }
 
 }

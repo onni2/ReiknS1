@@ -2,15 +2,15 @@
 *****
 * Canvas Group:
 * Name & Kt: Marteinn Lundi Kjartansson kt.250202-2960
-* Name & Kt: Óðinn Karl Skúlason kt.
+* Name & Kt: Óðinn Karl Skúlason kt.300399-
 *
-* Operating system: 
-* Compiler: 
-* Text editor / IDE: 
+* Operating system: Windows
+* Compiler: Visual Studio Code Compiler
+* Text editor / IDE: Visual Studio Code
 *
-* Have you taken (part of) this course before:
+* Have you taken (part of) this course before: No neither one of us have taken part of this course.
 *
-* Hours to complete assignment (optional): 
+* Hours to complete assignment (optional): Part A: 10 hours, Part B: 3 hours.
 *
 *************************************************************************
 *****/
@@ -20,6 +20,12 @@
 * whether the system percolates?
 *************************************************************************
 ****/
+Our implementation of the Percolation system represents a model for an N by N grid using Weighted Quick Union Find 
+Data structure. This allowed us to determine whether the system percolates, which means that there is a path of open sites 
+from the top row to the bottom row.
+The code initalizes the grid and implements operations to maipulate and analyze it. 
+The percolation status is determined by checking wheter the virtual top node(source) is connected to the bottom node(sink) 
+in the union-find structure.
 /*************************************************************************
 *****
 * Using Percolation with QuickFindUF.java, fill in the table below such
@@ -36,22 +42,26 @@ as
 * 5.3*10^-8 * N^5.0 T^1.5.
 *************************************************************************
 ****/
-(keep T constant)
+T = 100
 N time (seconds)
 ------------------------------
-...
-...
-...
-...
-...
-(keep N constant)
+50
+100
+200
+400
+800
+1600
+------------------------------
+
+N = 100
 T time (seconds)
 ------------------------------
-...
-...
-...
-...
-...
+50
+100
+200
+400
+800
+1600
 Running time as a function of N and T: ~
 Reasoning for this running time:
 /*************************************************************************
@@ -59,22 +69,27 @@ Reasoning for this running time:
 * Repeat the previous question, but use WeightedQuickUnionUF.java.
 *************************************************************************
 ****/
-(keep T constant)
+
+T = 100
 N time (seconds)
 ------------------------------
-...
-...
-...
-...
-...
-(keep N constant)
+50
+100
+200
+400
+800
+1600
+
+N = 100
 T time (seconds)
 ------------------------------
-...
-...
-...
-...
-...
+50
+100
+200
+400
+800
+1600
+
 Running time as a function of N and T: ~
 Reasoning for this running time:
 /**********************************************************************

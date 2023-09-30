@@ -1,6 +1,8 @@
-package s2;
-
 import java.util.Comparator;
+
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Out;
+import edu.princeton.cs.algs4.StdDraw;
 
 /*************************************************************************
  * Compilation: javac Point.java Execution: Dependencies: StdDraw.java
@@ -34,10 +36,19 @@ public class Point implements Comparable<Point> {
         StdDraw.line(this.x, this.y, that.x, that.y);
     }
 
-    // slope between this point and that point
     public double slopeTo(Point that) {
-        // TODO: Implement this
-        return 0;
+        if (this.x == that.x) {
+            if (this.y == that.y) {
+                return Double.NEGATIVE_INFINITY; // degenerate line segment
+            }
+            return Double.POSITIVE_INFINITY; // vertical line segment
+        }
+
+        if (this.y == that.y) {
+            return 0.0; // horizontal line segment
+        }
+
+        return (double) (that.y - this.y) / (that.x - this.x);
     }
 
     /**
@@ -45,8 +56,13 @@ public class Point implements Comparable<Point> {
      * y-coordinates and breaking ties by x-coordinates
      */
     public int compareTo(Point that) {
-        // TODO: Implement this
-        return 0;
+        if (this.y < that.y || (this.y == that.y && this.x < that.x)) {
+            return -1;
+        } else if (this.y == that.y && this.x == that.x) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     // return string representation of this point

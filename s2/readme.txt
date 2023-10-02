@@ -2,13 +2,13 @@
  *  Pattern Recognition readme.txt template
  **********************************************************************/
 
-Name:             
+Name: Marteinn Lundi Kjartansson             
 Login:            
-Hópur:
+HÃ³pur:
 
 Partner name:     
 Partner login:    
-Partner hópur:
+Partner hÃ³pur:
 
 Username of the student submitting to Mooshak: 
 

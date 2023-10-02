@@ -16,7 +16,7 @@ public class Point implements Comparable<Point> {
     public final int x, y;
 
     // compare points by slope
-    public final Comparator<Point> SLOPE_ORDER = null;
+    public final Comparator<Point> SLOPE_ORDER = new SlopeOrderComparator();
 
     // create the point (x, y)
     public Point(int x, int y) {
@@ -55,7 +55,15 @@ public class Point implements Comparable<Point> {
      * Is this point lexicographically smaller than that one? comparing
      * y-coordinates and breaking ties by x-coordinates
      */
+    
     public int compareTo(Point that) {
+        int result = Double.compare(this.slopeTo(that), that.slopeTo(this));
+
+        if (result != 0) {
+            return result;
+        }
+
+        // If slopes are equal, compare based on the first point in each segment
         if (this.y < that.y || (this.y == that.y && this.x < that.x)) {
             return -1;
         } else if (this.y == that.y && this.x == that.x) {
@@ -71,11 +79,24 @@ public class Point implements Comparable<Point> {
         return "(" + x + ", " + y + ")";
     }
 
+    private class SlopeOrderComparator implements Comparator<Point> {
+        public int compare(Point p1, Point p2) {
+            double slope1 = slopeTo(p1);
+            double slope2 = slopeTo(p2);
+
+            return Double.compare(slope1, slope2);
+        }
+    }
+
+
     public static void main(String[] args) {
+        System.out.println("1");
         /*
          * Do not modify
          */
-        In in = new In();
+        String filePath = args[0];  // First command line argument is the file path
+
+        In in = new In(filePath);
         Out out = new Out();
         int n = in.readInt();
         Point[] points = new Point[n];

@@ -1,29 +1,23 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
-
 import edu.princeton.cs.algs4.In;
 
 public class Brute {
-    private final List<List<Point>> lineSegments;
+    private final Point[][] lineSegments; // Array to store line segments
+    private int numberOfSegments; // Variable to keep track of the number of segments
 
     public Brute(Point[] points) {
-        lineSegments = new ArrayList<>();
-
         int n = points.length;
+        lineSegments = new Point[n][4]; // Each segment has 4 points
+        numberOfSegments = 0;
+
         for (int i = 0; i < n - 3; i++) {
             for (int j = i + 1; j < n - 2; j++) {
                 for (int k = j + 1; k < n - 1; k++) {
                     for (int m = k + 1; m < n; m++) {
                         if (points[i].slopeTo(points[j]) == points[i].slopeTo(points[k]) &&
                                 points[i].slopeTo(points[j]) == points[i].slopeTo(points[m])) {
-                            List<Point> segment = new ArrayList<>();
-                            segment.add(points[i]);
-                            segment.add(points[j]);
-                            segment.add(points[k]);
-                            segment.add(points[m]);
-                            Collections.sort(segment); // Sort the points within the segment
-                            lineSegments.add(segment);
+                            Point[] segment = { points[i], points[j], points[k], points[m] };
+                            sort(segment); // Sort the points within the segment
+                            lineSegments[numberOfSegments++] = segment;
                         }
                     }
                 }
@@ -31,11 +25,25 @@ public class Brute {
         }
     }
 
-    public int numberOfSegments() {
-        return lineSegments.size();
+    // Custom sorting function for points within a segment
+    private void sort(Point[] segment) {
+        int n = segment.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (segment[i].compareTo(segment[j]) > 0) {
+                    Point temp = segment[i];
+                    segment[i] = segment[j];
+                    segment[j] = temp;
+                }
+            }
+        }
     }
 
-    public Iterable<List<Point>> segments() {
+    public int numberOfSegments() {
+        return numberOfSegments;
+    }
+
+    public Point[][] segments() {
         return lineSegments;
     }
 
@@ -45,46 +53,26 @@ public class Brute {
             System.out.println("Usage: java Brute <input-file>");
             return;
         }
-    
+
         In in = new In(args[0]);
         int n = in.readInt();
         Point[] points = new Point[n];
-    
+
         for (int i = 0; i < n; i++) {
             int x = in.readInt();
             int y = in.readInt();
             points[i] = new Point(x, y);
         }
-    
+
         Brute brute = new Brute(points);
-    
-        // Store segments in a list to sort them
-        List<List<Point>> segmentsList = new ArrayList<>();
-        for (List<Point> segment : brute.segments()) {
-            // Sort the points within the segment
-            Collections.sort(segment);
-            segmentsList.add(segment);
-        }
-    
-        // Sort the segments
-        segmentsList.sort((seg1, seg2) -> {
-            for (int i = 0; i < seg1.size(); i++) {
-                int compare = seg1.get(i).compareTo(seg2.get(i));
-                if (compare != 0) {
-                    return compare;
-                }
+
+        // Print the segments
+        for (int i = 0; i < brute.numberOfSegments(); i++) {
+            Point[] segment = brute.segments()[i];
+            for (int j = 0; j < segment.length; j++) {
+                System.out.print(segment[j] + ", ");
             }
-            return 0;
-        });
-    
-        // Print the sorted segments
-        for (List<Point> segment : segmentsList) {
-            int size = segment.size();
-            for (int i = 0; i < size - 1; i++) {
-                System.out.print(segment.get(i) + ", ");
-            }
-            System.out.println(segment.get(size - 1));
+            System.out.println();
         }
     }
-    
 }

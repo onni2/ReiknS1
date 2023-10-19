@@ -55,21 +55,20 @@ public class Point implements Comparable<Point> {
      * Is this point lexicographically smaller than that one? comparing
      * y-coordinates and breaking ties by x-coordinates
      */
-    
+
     public int compareTo(Point that) {
-        int result = Double.compare(this.slopeTo(that), that.slopeTo(this));
-
-        if (result != 0) {
-            return result;
-        }
-
-        // If slopes are equal, compare based on the first point in each segment
-        if (this.y < that.y || (this.y == that.y && this.x < that.x)) {
+        if (this.y < that.y) {
             return -1;
-        } else if (this.y == that.y && this.x == that.x) {
-            return 0;
-        } else {
+        } else if (this.y > that.y) {
             return 1;
+        } else { // this.y == that.y
+            if (this.x < that.x) {
+                return -1;
+            } else if (this.x > that.x) {
+                return 1;
+            } else { // this.x == that.x
+                return 0;
+            }
         }
     }
 
@@ -88,15 +87,16 @@ public class Point implements Comparable<Point> {
         }
     }
 
+    public Comparator<Point> slopeOrder() {
+        return SLOPE_ORDER;
+    }
 
     public static void main(String[] args) {
-        System.out.println("1");
         /*
          * Do not modify
          */
-        String filePath = args[0];  // First command line argument is the file path
 
-        In in = new In(filePath);
+        In in = new In();
         Out out = new Out();
         int n = in.readInt();
         Point[] points = new Point[n];
